@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
     x_train = torch.from_numpy(x_train).float()
     y_train = torch.from_numpy(y_train).float()
+
     f_train = x_train[:,6]
     q_train = y_train[:,0]
     r_train = y_train[:,1]
@@ -34,8 +35,9 @@ if __name__ == '__main__':
 
 
     ############# 设定切分
-    dataset = TensorDataset(x_train, y_train[:,1:3], q_train)
-    batchsize = 256
+    # dataset = TensorDataset(x_train[:,:6], f_train,y_train[:,1:3], q_train)
+    dataset = TensorDataset(torch.log(x_train[:,:6]), torch.log(f_train),torch.log(y_train[:,1:3]), torch.log(q_train))
+    batchsize = 64
     dataloader = DataLoader(dataset,batchsize, shuffle=False)
 
 
@@ -43,11 +45,13 @@ if __name__ == '__main__':
     ######开始训练
 
     model = trainer.PINN()
-    trainer.train(model, dataloader, epoches=2000, alpha=1.0, beta=0.2)
+    trainer.train(model, dataloader, epoches=2000, alpha=1.0, beta=6.0)
 
 
 
-    trainer.test(model, (x_test, x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
+    # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
+
+    trainer.test(model, (torch.log(x_test[:,:6]), torch.log(x_test[:,6]), torch.log(y_test[:,0]), torch.log(y_test[:,1]), torch.log(y_test[:,2])))
 
 
     torch.save(model.state_dict(), "models/PINN_model.pth")
