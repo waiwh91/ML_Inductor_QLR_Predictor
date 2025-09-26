@@ -8,15 +8,15 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
 if __name__ == '__main__':
-    # data_processor = data_processor.data_processor("RLQ")
-    #
-    # data_processor.process_dir()
+    data_processor = data_processor.data_processor("RLQ")
+
+    data_processor.process_dir()
 
     torch.cuda.set_device(0)
 
     data = pd.read_csv("data.csv").to_numpy()
 
-    x_train, y_train, x_test, y_test = trainer.split_data(data)
+    x_train, y_train, x_test, y_test = trainer.split_data(data, 0.7)
 
 
     x_train = torch.from_numpy(x_train).float()
