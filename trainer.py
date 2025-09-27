@@ -46,7 +46,7 @@ class PINN(nn.Module):
         out = self.fc4(h)
         return out
 
-def train(model, dataloader, epoches = 2000, alpha = 1.0, beta = 1.0):
+def train(model, dataloader, epoches = 2000, alpha = 1.0, beta = 6.0):
     optimizer = optim.Adam(model.parameters(), lr = 1e-3)
     loss_fn = nn.MSELoss()
     loss_q = nn.SmoothL1Loss()
