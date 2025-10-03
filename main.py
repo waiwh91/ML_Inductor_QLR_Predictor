@@ -48,7 +48,6 @@ if __name__ == '__main__':
     trainer.train(model, dataloader, epoches=2000, alpha=1.0, beta=6.0)
 
 
-
     # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
 
     trainer.test(model, (torch.log(x_test[:,:6]), torch.log(x_test[:,6]), torch.log(y_test[:,0]), torch.log(y_test[:,1]), torch.log(y_test[:,2])))

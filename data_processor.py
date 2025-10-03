@@ -36,7 +36,10 @@ class data_processor:
 
 
             #################### RLQ Data processing, with 5 freqs
-            csv_data = pandas.read_csv(f"RLQ/{file}").to_numpy()
+            csv_data = pandas.read_csv(f"RLQ/{file}")
+            ohm_flag = csv_data.columns[2]
+            csv_data = csv_data.to_numpy()
+
             for i in range(5):
                 tCu.append(file[tCu_index + 3: wCu_index - 3])
                 wCu.append(file[wCu_index + 3: tLamCore_index - 3])
@@ -46,7 +49,12 @@ class data_processor:
                 tSu.append(file[tSu_index + 3: len(file) - 10])
                 freq.append(csv_data[i,0])
                 output_q.append(csv_data[i,1])
-                output_r.append(csv_data[i,2])
+                if ohm_flag == "re(Matrix1.Z(Winding,Winding)) [mOhm]":
+
+                    output_r.append(csv_data[i,2])
+                elif ohm_flag == "re(Matrix1.Z(Winding,Winding)) [ohm]":
+
+                    output_r.append(csv_data[i, 2]*1000)
                 output_l.append(csv_data[i,3])
 
 

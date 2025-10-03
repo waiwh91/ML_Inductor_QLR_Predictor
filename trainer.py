@@ -69,9 +69,9 @@ def train(model, dataloader, epoches = 2000, alpha = 1.0, beta = 6.0):
             omega = np.log(2) + np.log(torch.pi) + f
             Q_pre = omega + L_pre - R_pre
 
-            for i in range(len(Q_pre)):
-                if Q_pre[i] > np.log(1000):
-                    Q_pre[i] = Q_pre[i] - np.log(1000)
+            # for i in range(len(Q_pre)):
+            #     if Q_pre[i] > np.log(1000):
+            #         Q_pre[i] = Q_pre[i] - np.log(1000)
 
 
             loss_physics = loss_fn(torch.from_numpy(Q_pre), batch_q)
@@ -95,9 +95,9 @@ def test(model, data):
     omega = np.log(2) + np.log(torch.pi) + f
     Q_pre = omega + L_pre - R_pre
 
-    for i in range(len(Q_pre)):
-        if Q_pre[i] > np.log(1000):
-            Q_pre[i] = Q_pre[i] - np.log(1000)
+    # for i in range(len(Q_pre)):
+    #     if Q_pre[i] > np.log(1000):
+    #         Q_pre[i] = Q_pre[i] - np.log(1000)
 
     dataframe = pd.DataFrame({"Rpre":np.exp(R_pre), "Lpre":np.exp(L_pre), "Qpre":np.exp(Q_pre), "Rdata":np.exp(R_data), "Ldata":np.exp(L_data), "Qdata":np.exp(Q_data), "f":np.exp(f)})
     dataframe.to_csv("output.csv", index=False)
@@ -119,12 +119,12 @@ def test(model, data):
     sumf = 0
     for i in range(len(PREQ)):
 
-        if DATF[i] == np.log(1):
-            sumf += 1
 
-            error_q_total = error_q_total + (abs(PREQ[i] - DATQ[i]).item() / DATQ[i])
-            error_r_total = error_r_total + (abs(PRER[i] - DATR[i]).item() / DATR[i])
-            error_l_total = error_l_total + (abs(PREL[i] - DATL[i]).item() / DATL[i])
+        sumf += 1
+
+        error_q_total = error_q_total + (abs(PREQ[i] - DATQ[i]).item() / DATQ[i])
+        error_r_total = error_r_total + (abs(PRER[i] - DATR[i]).item() / DATR[i])
+        error_l_total = error_l_total + (abs(PREL[i] - DATL[i]).item() / DATL[i])
 
 
     print(f"RMSE of Q: {(error_q_total/sumf)}")
