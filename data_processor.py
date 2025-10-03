@@ -31,12 +31,12 @@ class data_processor:
             tLamCore_index = file.find("tLamCore")
             Nlam_index = file.find("Nlam")
             tAlN_index = file.find("tAlN")
-            tSu_index = file.find("tSu")
+            tSu8_index = file.find("tSu8")
 
 
 
             #################### RLQ Data processing, with 5 freqs
-            csv_data = pandas.read_csv(f"RLQ/{file}")
+            csv_data = pandas.read_csv(f"{self.file_path}/{file}")
             ohm_flag = csv_data.columns[2]
             csv_data = csv_data.to_numpy()
 
@@ -45,8 +45,8 @@ class data_processor:
                 wCu.append(file[wCu_index + 3: tLamCore_index - 3])
                 tLamCore.append(file[tLamCore_index + 8: Nlam_index - 3])
                 Nlam.append(file[Nlam_index + 4: tAlN_index - 1])
-                tAlN.append(file[tAlN_index + 4: tSu_index - 3])
-                tSu.append(file[tSu_index + 3: len(file) - 10])
+                tAlN.append(file[tAlN_index + 4: tSu8_index - 3])
+                tSu.append(file[tSu8_index + 4: len(file) - 10])
                 freq.append(csv_data[i,0])
                 output_q.append(csv_data[i,1])
                 if ohm_flag == "re(Matrix1.Z(Winding,Winding)) [mOhm]":
@@ -59,4 +59,4 @@ class data_processor:
 
 
         data_frame = pd.DataFrame({"tCu": tCu, "wCu": wCu, "tLamCore": tLamCore, "Nlam": Nlam, "AlN": tAlN, "tSu": tSu, "freq": freq, "Q":output_q, "R":output_r, "L":output_l})
-        data_frame.to_csv('data.csv', index = False)
+        data_frame.to_csv('total_data.csv', index = False)

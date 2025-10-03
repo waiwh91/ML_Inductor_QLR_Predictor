@@ -12,7 +12,7 @@ wcu_choice = [175,200,225,250,275]
 tlam_choice = [50, 100, 150, 200, 250, 350, 400]
 nlam_choice = [6, 8, 10, 12, 14, 16, 18]
 aln_choice = [10, 15, 20, 25]
-tsu_choice = [80, 82, 84, 86, 88]
+tsu8_choice = [ 2, 4, 6, 8]
 
 
 
@@ -22,7 +22,7 @@ df = pd.DataFrame({
     "tLam": np.random.choice(tlam_choice, size=20),
     "nlam": np.random.choice(nlam_choice, size=20),
     "aln": np.random.choice(aln_choice, size=20),
-    "tsu": np.random.choice(tsu_choice, size=20),
+    "tsu": np.random.choice(tsu8_choice, size=20),
 
 })
 
@@ -31,7 +31,7 @@ data = df.copy().to_numpy()
 
 
 
-data = np.repeat(data, 4, axis=0)
+data = np.repeat(data, 5, axis=0)
 
 x, y = data.shape
 
