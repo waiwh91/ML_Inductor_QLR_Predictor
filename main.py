@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     data_processor.process_dir()
 
-    torch.cuda.set_device(0)
+    # torch.cuda.set_device(0)
 
     data = pd.read_csv("data.csv").to_numpy()
 
