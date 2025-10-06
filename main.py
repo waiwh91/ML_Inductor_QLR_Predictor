@@ -5,7 +5,7 @@ import trainer
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
+
 
 if __name__ == '__main__':
     data_processor = data_processor.data_processor("RLQ")
