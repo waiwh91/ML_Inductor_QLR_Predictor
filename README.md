@@ -9,7 +9,7 @@ Data_splitter: `proportion = 0.7`
 The lowest MPE tested on the test dataset is:  
 * ***R: 1%***  
 * ***L: 0.95%***  
-* ***Q: 2.7%%***
+* ***Q: 2.7%***
 
 ## Data processing
 Data_processor will automatically read filenames and data, then generate `data.csv` in root folder. 
