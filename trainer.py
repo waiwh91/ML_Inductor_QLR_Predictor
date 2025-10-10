@@ -4,7 +4,7 @@ import torch.optim as optim
 import torch.nn as nn
 import numpy as np
 
-from sklearn.preprocessing import MinMaxScaler
+# from sklearn.preprocessing import MinMaxScaler
 
 
 ######### 划分数据集 split dataset into train/test
