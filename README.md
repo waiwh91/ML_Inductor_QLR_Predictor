@@ -4,7 +4,7 @@
 
 ## *Accuracy*
 With the following parameter:  
-Trainer: `epochs = 2000, alpha = 1.0, beta = 6.0`  
+Trainer: `epochs = 2500, alpha = 1.0, beta = 10.0`  
 Data_splitter: `proportion = 0.7`  
 The lowest MPE tested on the test dataset is:  
 * ***R: 0.4%***  
