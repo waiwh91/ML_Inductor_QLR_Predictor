@@ -59,4 +59,4 @@ class data_processor:
 
 
         data_frame = pd.DataFrame({"tCu": tCu, "wCu": wCu, "tLamCore": tLamCore, "Nlam": Nlam, "AlN": tAlN, "tSu": tSu, "freq": freq, "Q":output_q, "R":output_r, "L":output_l})
-        data_frame.to_csv('total_data.csv', index = False)
+        data_frame.to_csv('data.csv', index = False)
