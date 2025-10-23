@@ -66,7 +66,7 @@ def generate_50_percent():
                         test_dataframe_50.iloc[len(test_dataframe_50)-1, k] = np.random.choice(train_set_parameters[k])
 
     # print(test_dataframe_50)
-    test_dataframe_50.to_csv("test_parameter_50.csv", index=False)
+    test_dataframe_50.to_csv("generated_parameters/test_parameter_50.csv", index=False)
 
 
 def generate_100_percent():
@@ -89,7 +89,7 @@ def generate_100_percent():
                         test_dataframe_100.iloc[len(test_dataframe_100)-1, k] = np.random.choice(train_set_parameters[k])
 
     # print(test_dataframe_50)
-    test_dataframe_100.to_csv("test_parameter_100.csv", index=False)
+    test_dataframe_100.to_csv("/generated_parameters/test_parameter_100.csv", index=False)
 
 if __name__ == '__main__':
     generate_50_percent()
