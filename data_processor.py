@@ -4,9 +4,9 @@ import pandas
 import pandas as pd
 
 class data_processor:
-    def __init__(self, file_path):
+    def __init__(self, file_path, output_path = "data.csv"):
         self.file_path = file_path
-
+        self.output_path = output_path
 
     def process_dir(self):
         files = os.listdir(self.file_path)
@@ -59,4 +59,4 @@ class data_processor:
 
 
         data_frame = pd.DataFrame({"tCu": tCu, "wCu": wCu, "tLamCore": tLamCore, "Nlam": Nlam, "AlN": tAlN, "tSu": tSu, "freq": freq, "Q":output_q, "R":output_r, "L":output_l})
-        data_frame.to_csv('data.csv', index = False)
+        data_frame.to_csv(self.output_path, index = False)
