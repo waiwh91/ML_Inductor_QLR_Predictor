@@ -12,8 +12,12 @@ def freq_adder(data, output):
             test_data[i - 1] = np.append(data[i - 1], np.array([1]), axis=0)
         elif i % 5 == 0:
             test_data[i - 1] = np.append(data[i - 1], np.array([100]), axis=0)
-        else:
-            test_data[i - 1] = np.append(data[i - 1], np.array([((i - 1) % 5) * 25.25]), axis=0)
+        elif i % 5 == 2:
+            test_data[i - 1] = np.append(data[i - 1], np.array([25.75]), axis=0)
+        elif i % 5 == 3:
+            test_data[i - 1] = np.append(data[i - 1], np.array([50.5]), axis=0)
+        elif i % 5 == 4:
+            test_data[i - 1] = np.append(data[i - 1], np.array([75.25]), axis=0)
 
 
 

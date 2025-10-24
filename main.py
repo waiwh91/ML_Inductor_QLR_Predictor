@@ -18,7 +18,7 @@ def train_model():
     print("device: ", device)
     data = pd.read_csv("data.csv").to_numpy()
 
-    x_train, y_train, x_test, y_test = trainer.split_data(data, 0.333)
+    x_train, y_train, x_test, y_test = trainer.split_data(data, 0.7)
 
     x_train = torch.from_numpy(x_train).float().to(device)
     y_train = torch.from_numpy(y_train).float().to(device)
@@ -76,7 +76,7 @@ def error_check():
 
 if __name__ == '__main__':
 
-    # process_data()
-    # train_model()
+    process_data()
+    train_model()
 
-    error_check()
+    # error_check()

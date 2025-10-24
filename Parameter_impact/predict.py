@@ -34,7 +34,7 @@ r_pre_50, l_pre_50 = model(torch.log(x_train_50), torch.log(f_train_50)).T.detac
 omega = np.log(2) + np.log(torch.pi) + torch.log(f_train_50)
 Q_pre_50 = omega + l_pre_50 - r_pre_50
 
-output_df = pd.DataFrame({"tCu": x_train_50[:, 0], "wCu": x_train_50[:,1], "tLam":x_train_50[:,2], "nLam":x_train_50[:,3], "aln":x_train_50[:,4], "tsu":x_train_50[:,5], "freq":f_train_50,"Pre_R": np.exp(r_pre_50), "Pre_L": np.exp(l_pre_50),"Pre_Q": np.exp(Q_pre_50)})
+output_df = pd.DataFrame({"tCu": x_train_50[:, 0], "wCu": x_train_50[:,1], "tLam":x_train_50[:,2], "nLam":x_train_50[:,3], "aln":x_train_50[:,4], "tsu":x_train_50[:,5], "freq":f_train_50,"Pre_Q": np.exp(Q_pre_50), "Pre_R": np.exp(r_pre_50), "Pre_L": np.exp(l_pre_50)})
 
 output_df.to_csv("predicted_csv/predicted_50.csv", index=False)
 
@@ -44,7 +44,7 @@ r_pre_100, l_pre_100 = model(torch.log(x_train_100), torch.log(f_train_100)).T.d
 omega = np.log(2) + np.log(torch.pi) + torch.log(f_train_100)
 Q_pre_100 = omega + l_pre_100 - r_pre_100
 
-output_df = pd.DataFrame({"tCu": x_train_100[:, 0], "wCu": x_train_100[:,1], "tLam":x_train_100[:,2], "nLam":x_train_100[:,3], "aln":x_train_100[:,4], "tsu":x_train_100[:,5], "freq":f_train_100,"Pre_R": np.exp(r_pre_100), "Pre_L": np.exp(l_pre_100),"Pre_Q": np.exp(Q_pre_100)})
+output_df = pd.DataFrame({"tCu": x_train_100[:, 0], "wCu": x_train_100[:,1], "tLam":x_train_100[:,2], "nLam":x_train_100[:,3], "aln":x_train_100[:,4], "tsu":x_train_100[:,5], "freq":f_train_100, "Pre_Q": np.exp(Q_pre_100), "Pre_R": np.exp(r_pre_100), "Pre_L": np.exp(l_pre_100)})
 
 output_df.to_csv("predicted_csv/predicted_100.csv", index=False)
 

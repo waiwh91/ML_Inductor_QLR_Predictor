@@ -45,4 +45,4 @@ for i in range(1, data.shape[0] + 1):
 
 
 output_pd = pd.DataFrame({"tCu": test_data[:,0],"wCu": test_data[:,1],"tLam":test_data[:,2], "nLam": test_data[:,3], "aln": test_data[:,4], "tsu": test_data[:,5], "freq": test_data[:,6]})
-output_pd.to_csv("simulation_test/simulation_data.csv", index=False)
+output_pd.to_csv("simulation_test/simulator_output.csv", index=False)
