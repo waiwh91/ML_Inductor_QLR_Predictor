@@ -26,24 +26,28 @@ class PINN(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.fc1 = nn.Linear(6, 32)
-        self.ln1 = nn.LayerNorm(32)
+        self.fc1 = nn.Linear(6, 8)
+        # self.ln1 = nn.LayerNorm(8)
 
-        self.fc2 = nn.Linear(32+1, 16)
-        self.ln2 = nn.LayerNorm(16)
-        self.fc3 = nn.Linear(16,8)
+        self.fc2 = nn.Linear(8+1, 32)
+        self.ln2 = nn.LayerNorm(32)
+        self.fc3 = nn.Linear(32,8)
         self.fc4 = nn.Linear(8, 2)
 
     def forward(self, x, extra):
-        h = torch.tanh(self.fc1(x))
+        # h = torch.tanh(self.fc1(x))
+        h = nn.functional.gelu(self.fc1(x))
         h = self.ln1(h)
 
         extra = extra.unsqueeze(1)
         h = torch.cat([h, extra], dim=1)
-        h = torch.tanh(self.fc2(h))
+        # h = torch.tanh(self.fc2(h))
+        h = nn.functional.gelu(self.fc2(h))
         h = self.ln2(h)
-        h = torch.tanh(self.fc3(h))
+        # h = torch.tanh(self.fc3(h))
+        h = nn.functional.gelu(self.fc3(h))
         out = self.fc4(h)
+        # out = nn.Softmax(dim=1)(out)
         return out
 
 def train(model, dataloader, epoches = 2000, alpha = 1.0, beta = 6.0):

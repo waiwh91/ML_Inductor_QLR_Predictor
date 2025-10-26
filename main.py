@@ -36,14 +36,14 @@ def train_model():
     # dataset = TensorDataset(x_train[:,:6], f_train,y_train[:,1:3], q_train)
     dataset = TensorDataset(torch.log(x_train[:, :6]), torch.log(f_train), torch.log(y_train[:, 1:3]),
                             torch.log(q_train))
-    batchsize = 64
+    batchsize = 32
     dataloader = DataLoader(dataset, batchsize, shuffle=False)
 
     ######开始训练
 
     model = trainer.PINN()
     model.to(device)
-    trainer.train(model, dataloader, epoches=2500, alpha=1.0, beta=10.0)
+    trainer.train(model, dataloader, epoches=1500, alpha=10.0, beta=10.0)
 
     # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
 
