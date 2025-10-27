@@ -43,7 +43,7 @@ def train_model():
 
     model = trainer.PINN()
     model.to(device)
-    trainer.train(model, dataloader, epoches=1500, alpha=10.0, beta=10.0)
+    trainer.train(model, dataloader, epoches=2000, alpha=1.0, beta=10.0)
 
     # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
 
@@ -59,7 +59,7 @@ def error_check():
     q = 0
     r = 0
     l = 0
-    for i in range(10):
+    for i in range(3):
         mpe_q, mpe_r, mpe_l = train_model()
         q += mpe_q
         r += mpe_r
@@ -76,7 +76,7 @@ def error_check():
 
 if __name__ == '__main__':
 
-    process_data()
-    train_model()
+    # process_data()
+    # train_model()
 
-    # error_check()
+    error_check()

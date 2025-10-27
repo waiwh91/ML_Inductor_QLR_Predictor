@@ -30,23 +30,26 @@ class PINN(nn.Module):
         # self.ln1 = nn.LayerNorm(8)
 
         self.fc2 = nn.Linear(8+1, 32)
+
         self.ln2 = nn.LayerNorm(32)
-        self.fc3 = nn.Linear(32,8)
-        self.fc4 = nn.Linear(8, 2)
+        self.fc3 = nn.Linear(32,16)
+        self.fc4 = nn.Linear(16, 6)
+        self.fc5 = nn.Linear(6, 2)
 
     def forward(self, x, extra):
         # h = torch.tanh(self.fc1(x))
-        h = nn.functional.gelu(self.fc1(x))
-        h = self.ln1(h)
+        h = nn.functional.silu(self.fc1(x))
+        # h = self.ln1(h)
 
         extra = extra.unsqueeze(1)
         h = torch.cat([h, extra], dim=1)
         # h = torch.tanh(self.fc2(h))
-        h = nn.functional.gelu(self.fc2(h))
+        h = nn.functional.silu(self.fc2(h))
         h = self.ln2(h)
         # h = torch.tanh(self.fc3(h))
-        h = nn.functional.gelu(self.fc3(h))
-        out = self.fc4(h)
+        h = nn.functional.silu(self.fc3(h))
+        h = nn.functional.silu(self.fc4(h))
+        out = self.fc5(h)
         # out = nn.Softmax(dim=1)(out)
         return out
 

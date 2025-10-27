@@ -4,9 +4,9 @@ from click import style
 import matplotlib.ticker as ticker
 
 parameter_groups = ["t_Cu", "w_Cu", "t_LamCore", "n_LamCore", "AlN", "t_Su8"]
-value_Q_100 = [3.300, 71.229, 5.735, 3.680, 30.068, 1.976]
-value_R_100 = [2.953, 550.115, 7.625, 4.320, 24.659, 2.003]
-value_L_100 = [1.328, 111.393, 2.938, 2.020, 9.069, 1.229]
+value_Q_100 = [2.987, 6.282, 2.726, 3.709, 27.665, 1.892]
+value_R_100 = [3.059, 5.318, 3.328, 5.363, 159.909, 1.971]
+value_L_100 = [0.709, 3.998, 3.860, 2.913, 24.693, 0.782]
 
 
 # yticsk_number = [0, np.log10(5), np.log10(10), np.log10(20), np.log10(30), np.log10(100), np.log10(300)]
