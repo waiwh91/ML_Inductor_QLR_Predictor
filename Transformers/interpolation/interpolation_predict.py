@@ -1,6 +1,6 @@
 import torch
 import pandas as pd
-from model.model_design import transformers_model
+from models.model_design import transformers_model
 import predict
 
 model = transformers_model.PINNTransformer()

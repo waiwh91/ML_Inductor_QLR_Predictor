@@ -1,6 +1,6 @@
 import pandas as pd
-from model.model_design import interpolation_model
-import model.spliter as spliter
+from models.model_design import interpolation_model
+import models.spliter as spliter
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -15,7 +15,7 @@ def dataloader(x_train, y_train, batchsize):
     Q_pre = omega + L - R
 
     dataset = TensorDataset(x_train,x_train[:,6],y_train, Q_pre.to(device))
-    batchsize = 1024
+    batchsize = batchsize
     dataloader = DataLoader(dataset, batchsize, shuffle=False)
     return dataloader
 

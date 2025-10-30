@@ -35,7 +35,7 @@ def train(model, dataloader, epoches = 200,alpha = 1.0, beta = 10.0):
         epoch_loss += loss.item()
         if epoch % 100 == 0:
             print(f"Pre_train_Epoch {epoch + 1}/{epoches}, pre_train_Loss = {epoch_loss / len(dataloader):.6f}")
-    # torch.save(model.state_dict(), "saved_models/transformer_pretrained_from_pinn.pt")
+    # torch.save(models.state_dict(), "saved_models/transformer_pretrained_from_pinn.pt")
 
     for epoch in range(epoches):
         epoch_loss = 0

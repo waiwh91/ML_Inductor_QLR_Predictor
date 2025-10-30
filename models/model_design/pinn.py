@@ -21,7 +21,7 @@ def split_data(data, proportion):
 
     return x_train, y_train, x_test, y_test
 
-######### Define PINN model 定义模型
+######### Define PINN models 定义模型
 class PINN(nn.Module):
     def __init__(self):
         super().__init__()

@@ -2,10 +2,10 @@ import pandas as pd
 from torch import device
 
 import data_process.ansys_integrator
-from model import spliter
+from models import spliter
 import torch
 from torch.utils.data import DataLoader, TensorDataset
-from model.model_design import pinn, transformers_model
+from models.model_design import pinn, transformers_model
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -114,14 +114,14 @@ def train_model():
     # print("start train aln")
     #
     # aln_dataloader = aln_train_dataloader()
-    # transformers_model.train(model, aln_dataloader, epoches=300, alpha=1.0, beta=50.0)
+    # transformers_model.train(models, aln_dataloader, epoches=300, alpha=1.0, beta=50.0)
     #
     # print("aln training done")
     torch.save(model.state_dict(), "../saved_models/PINNtransformers_model.pth")
 
 
 
-    # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
+    # trainer.test(models, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
 
     mpe_q, mpe_r, mpe_l = transformers_model.test(model,
                                                   (torch.log(x_test[:, :7]), torch.log(x_test[:, 6]), torch.log(y_test[:, 0]), torch.log(y_test[:, 1]),

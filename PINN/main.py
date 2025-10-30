@@ -2,7 +2,7 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 import data_process.ansys_integrator as data_processor
-from model.model_design import pinn
+from models.model_design import pinn
 
 
 def process_data(path = "pinn_RLQ"):
@@ -43,7 +43,7 @@ def train_model():
     model.to(device)
     pinn.train(model, dataloader, epoches=1200, alpha=1.0, beta=10.0)
 
-    # pinn.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
+    # pinn.test(models, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
     torch.save(model.state_dict(), "../saved_models/PINN_model.pth")
 
     mpe_q, mpe_r, mpe_l = pinn.test(model,

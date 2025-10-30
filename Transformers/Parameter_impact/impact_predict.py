@@ -1,6 +1,6 @@
 import torch
 import pandas as pd
-from model.model_design import transformers_model
+from models.model_design import transformers_model
 import data_process.add_frequency as add_frequency
 import predict
 

@@ -1,8 +1,8 @@
 import torch
 import numpy as np
 import pandas as pd
-from model.model_design.pinn import PINN
-from model.model_design.transformers_model import PINNTransformer
+from models.model_design.pinn import PINN
+from models.model_design.transformers_model import PINNTransformer
 
 def transformer_predict(x_train, model, f_train, output_csv = 'Parameter_impact/predicted_csv/predicted.csv'):
     r_pre, l_pre = model(torch.log(x_train)).T.detach().numpy()
@@ -41,7 +41,7 @@ def predict(model, input_csv, output_csv):
     x_train = torch.from_numpy(data[:, :7]).int()
     f_train = torch.from_numpy(data[:, 6]).float()
 
-    #### Determine which model type
+    #### Determine which models type
     if isinstance(model, PINN):
         pinn_predict(x_train, model, f_train, output_csv)
     elif isinstance(model, PINNTransformer):
