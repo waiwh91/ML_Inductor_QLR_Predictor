@@ -1,7 +1,6 @@
 import torch
 import numpy as np
 import pandas as pd
-import trainer
 
 model = trainer.PINN()
 model.load_state_dict(torch.load('models/PINN_model.pth'))

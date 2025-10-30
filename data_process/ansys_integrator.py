@@ -36,7 +36,7 @@ class data_processor:
 
 
 
-            #################### RLQ Data processing, with 5 freqs
+            #################### pinn_RLQ Data processing, with 5 freqs
             csv_data = pandas.read_csv(f"{self.file_path}/{file}")
             ohm_flag = csv_data.columns[2]
             csv_data = csv_data.to_numpy()

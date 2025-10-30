@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-# data_processor = data_processor.data_processor("RLQ")
+# data_processor = data_processor.data_processor("pinn_RLQ")
 # data_processor.process_dir()
 
 pre_data = pd.read_csv('~/ML_inductor/simulation_test/predicted_output.csv').to_numpy()

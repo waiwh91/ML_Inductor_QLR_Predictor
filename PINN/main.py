@@ -1,11 +1,9 @@
 import pandas as pd
-import data_processor
-import trainer
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
 
-def process_data(path = "RLQ"):
+def process_data(path = "pinn_RLQ"):
     processor = data_processor.data_processor(path)
 
     processor.process_dir()

@@ -1,27 +1,22 @@
 import pandas as pd
 from torch import device
 
-import PINN.data_processor
-import PINN
-import transformers_model
+import data_process.ansys_integrator
+from model_design import transformers_model
 import spliter
 import torch
 from torch.utils.data import DataLoader, TensorDataset
-import numpy as np
-
-
-
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
-def process_data(path = "/home/martin/ML_Inductor_QLR_Predictor/Transformers/test_RLQ"):
-    processor = PINN.data_processor.data_processor(file_path=path)
+def process_data(path = "/home/martin/ML_Inductor_QLR_Predictor/Transformers/transformers_RLQ"):
+    processor = data_process.ansys_integrator.data_processor(file_path=path)
 
     processor.process_dir()
 
 def process_aln(path =  "/home/martin/ML_Inductor_QLR_Predictor/Transformers/aln"):
-    processor = PINN.data_processor.data_processor(file_path=path, output_path="aln.csv")
+    processor = data_process.ansys_integrator.data_processor(file_path=path, output_path="aln.csv")
     processor.process_dir()
 
 
@@ -96,7 +91,7 @@ def train_model():
 
     ######开始训练
     ##########先预训练
-    pinn_model = PINN.trainer.PINN()
+    pinn_model = model_design.pinn.PINN()
     pinn_model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/PINN/models/PINN_model.pth'))
     pinn_model.to(device)
     pre_train_data = pre_train_data_generator()
@@ -129,7 +124,7 @@ def train_model():
     # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
 
     mpe_q, mpe_r, mpe_l = transformers_model.test(model,
-                                       (torch.log(x_test[:, :7]), torch.log(x_test[:, 6]), torch.log(y_test[:, 0]), torch.log(y_test[:, 1]),
+                                                  (torch.log(x_test[:, :7]), torch.log(x_test[:, 6]), torch.log(y_test[:, 0]), torch.log(y_test[:, 1]),
                   torch.log(y_test[:, 2])))
 
 

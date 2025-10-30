@@ -1,12 +1,5 @@
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-import pandas as pd
-import numpy as np
-
-import PINN.trainer
-
 
 
 def train(model, dataloader, epoches = 200,alpha = 1.0, beta = 10.0):

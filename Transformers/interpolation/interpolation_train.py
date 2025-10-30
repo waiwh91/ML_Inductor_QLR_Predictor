@@ -1,7 +1,6 @@
 import pandas as pd
-import PINN.data_processor
-import transformers_model
-import spliter
+from model_design import interpolation_model
+import Transformers.spliter as spliter
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -11,9 +10,9 @@ from torch.utils.data import DataLoader, TensorDataset
 def train_model():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("device: ", device)
-    data = pd.read_csv("Parameter_impact/simulator_output_data/csv_100.csv").to_numpy()
+    data = pd.read_csv("../Parameter_impact/simulator_output_data/csv_100.csv").to_numpy()
 
-    x_train, y_train, x_test, y_test = spliter.split_data(data, 0.9)
+    x_train, y_train, x_test, y_test = spliter.split_data(data, 1.0)
 
     x_train = torch.from_numpy(x_train).float().to(device)
     y_train = torch.from_numpy(y_train).float().to(device)
@@ -36,17 +35,18 @@ def train_model():
 
     ######开始训练
 
-    model = transformers_model.PINNTransformer()
+    model = interpolation_model.PINNTransformer()
     model.to(device)
-    transformers_model.train(model, dataloader, epoches=800, alpha=1.0, beta=50.0)
+    interpolation_model.train(model, dataloader, epoches=3500, alpha=1.0, beta=50.0)
+    torch.save(model.state_dict(), "../models/PINNtransformers_interpolation_model.pth")
 
     # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
 
-    mpe_q, mpe_r, mpe_l = transformers_model.test(model,
-                                       (torch.log(x_test[:, :7]), torch.log(x_test[:, 6]), torch.log(y_test[:, 0]), torch.log(y_test[:, 1]),
+    mpe_q, mpe_r, mpe_l = interpolation_model.test(model,
+                                                   (torch.log(x_test[:, :7]), torch.log(x_test[:, 6]), torch.log(y_test[:, 0]), torch.log(y_test[:, 1]),
                   torch.log(y_test[:, 2])))
 
-    torch.save(model.state_dict(), "models/PINNtransformers_model.pth")
+
     return mpe_q, mpe_r, mpe_l
 
 if __name__ == '__main__':

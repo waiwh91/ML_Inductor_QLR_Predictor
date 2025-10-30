@@ -1,8 +1,8 @@
 import torch
 import numpy as np
 import pandas as pd
-from Transformers import transformers_model
-import add_frequency
+from model_design import transformers_model
+import data_process.add_frequency as add_frequency
 
 model = transformers_model.PINNTransformer()
 model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/Transformers/models/PINNtransformers_model.pth'))

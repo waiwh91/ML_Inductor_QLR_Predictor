@@ -1,15 +1,12 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 import pandas as pd
 import numpy as np
 
-import PINN.trainer
-
 
 class PINNTransformer(nn.Module):
-    def __init__(self, input_dim=7, output_dim=2, d_model=64, nhead=4, num_layers=2, dim_feedforward=512, dropout=0.1):
+    def __init__(self, input_dim=7, output_dim=2, d_model=128, nhead=8, num_layers=2, dim_feedforward=1024, dropout=0.1):
         super(PINNTransformer, self).__init__()
 
         self.input_dim = input_dim
