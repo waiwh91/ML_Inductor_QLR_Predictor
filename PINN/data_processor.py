@@ -10,6 +10,7 @@ class data_processor:
 
     def process_dir(self):
         files = os.listdir(self.file_path)
+
         # print(files)
         tCu = []
         wCu = []

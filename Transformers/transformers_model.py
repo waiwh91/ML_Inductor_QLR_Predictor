@@ -5,6 +5,8 @@ import torch.optim as optim
 import pandas as pd
 import numpy as np
 
+import PINN.trainer
+
 
 class PINNTransformer(nn.Module):
     def __init__(self, input_dim=7, output_dim=2, d_model=64, nhead=4, num_layers=2, dim_feedforward=512, dropout=0.1):
@@ -53,13 +55,15 @@ class PINNTransformer(nn.Module):
 
 
 def physics_informed_loss_function(y_pred, y_true, batch_f,batch_q, alpha, beta):
+
+
     loss_fn = nn.MSELoss()
     loss_data = loss_fn(y_pred, y_true)
 
     R_pre = y_pred.detach()[:, 0]
     L_pre = y_pred.detach()[:, 1]
     f = batch_f.detach()
-    omega = np.log(2) + np.log(torch.pi) + f
+    omega = torch.log(torch.tensor(2.0)) + torch.log(torch.tensor(torch.pi)) + f
     Q_pre = omega + L_pre - R_pre
     loss_physics = loss_fn(Q_pre, batch_q)
     loss = alpha * loss_data + beta * loss_physics
@@ -68,7 +72,8 @@ def physics_informed_loss_function(y_pred, y_true, batch_f,batch_q, alpha, beta)
 
 def train(model, dataloader, epoches = 200,alpha = 1.0, beta = 10.0):
     optimizer = optim.Adam(model.parameters(), lr = 1e-3)
-    for epoch in range(epoches):
+
+    for epoch in range(epoches+1):
         epoch_loss = 0
 
         for batch_x,  batch_f,batch_y, batch_q in dataloader:
@@ -82,6 +87,7 @@ def train(model, dataloader, epoches = 200,alpha = 1.0, beta = 10.0):
             epoch_loss += loss.item()
         if epoch % 100 == 0:
             print(f"Epoch {epoch + 1}/{epoches}, Loss = {epoch_loss / len(dataloader):.6f}")
+
 
 def test(model, data):
     x, f, Q_data, R_data, L_data = data
