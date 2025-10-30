@@ -1,6 +1,6 @@
 import pandas as pd
-from model_design import interpolation_model
-import Transformers.spliter as spliter
+from model.model_design import interpolation_model
+import model.spliter as spliter
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -38,7 +38,7 @@ def train_model():
     model = interpolation_model.PINNTransformer()
     model.to(device)
     interpolation_model.train(model, dataloader, epoches=3500, alpha=1.0, beta=50.0)
-    torch.save(model.state_dict(), "../models/PINNtransformers_interpolation_model.pth")
+    torch.save(model.state_dict(), "../saved_models/PINNtransformers_interpolation_model.pth")
 
     # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
 

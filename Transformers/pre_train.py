@@ -9,7 +9,7 @@ def train(model, dataloader, epoches = 200,alpha = 1.0, beta = 10.0):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     pinn_model = PINN.trainer.PINN()
-    pinn_model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/PINN/models/PINN_model.pth'))
+    pinn_model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/PINN/saved_models/PINN_model.pth'))
     pinn_model.to(device)
 
     x_pretrain = torch.rand(100000, 7).to(device)  # 输入维度6
@@ -35,7 +35,7 @@ def train(model, dataloader, epoches = 200,alpha = 1.0, beta = 10.0):
         epoch_loss += loss.item()
         if epoch % 100 == 0:
             print(f"Pre_train_Epoch {epoch + 1}/{epoches}, pre_train_Loss = {epoch_loss / len(dataloader):.6f}")
-    # torch.save(model.state_dict(), "models/transformer_pretrained_from_pinn.pt")
+    # torch.save(model.state_dict(), "saved_models/transformer_pretrained_from_pinn.pt")
 
     for epoch in range(epoches):
         epoch_loss = 0

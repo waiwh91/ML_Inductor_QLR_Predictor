@@ -2,10 +2,10 @@ import pandas as pd
 from torch import device
 
 import data_process.ansys_integrator
-from model_design import transformers_model
-import spliter
+from model import spliter
 import torch
 from torch.utils.data import DataLoader, TensorDataset
+from model.model_design import pinn, transformers_model
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -91,8 +91,8 @@ def train_model():
 
     ######开始训练
     ##########先预训练
-    pinn_model = model_design.pinn.PINN()
-    pinn_model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/PINN/models/PINN_model.pth'))
+    pinn_model = pinn.PINN()
+    pinn_model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/PINN/saved_models/PINN_model.pth'))
     pinn_model.to(device)
     pre_train_data = pre_train_data_generator()
 
@@ -117,7 +117,7 @@ def train_model():
     # transformers_model.train(model, aln_dataloader, epoches=300, alpha=1.0, beta=50.0)
     #
     # print("aln training done")
-    torch.save(model.state_dict(), "models/PINNtransformers_model.pth")
+    torch.save(model.state_dict(), "../saved_models/PINNtransformers_model.pth")
 
 
 

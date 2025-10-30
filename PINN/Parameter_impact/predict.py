@@ -4,7 +4,7 @@ import pandas as pd
 from data_process import add_frequency
 
 model = trainer.PINN()
-model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/PINN/models/PINN_model.pth'))
+model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/PINN/saved_models/PINN_model.pth'))
 
 
 

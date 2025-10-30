@@ -1,6 +1,8 @@
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader, TensorDataset
+import data_process.ansys_integrator as data_processor
+from model.model_design import pinn
 
 
 def process_data(path = "pinn_RLQ"):
@@ -14,7 +16,7 @@ def train_model():
     print("device: ", device)
     data = pd.read_csv("data.csv").to_numpy()
 
-    x_train, y_train, x_test, y_test = trainer.split_data(data, 1.0)
+    x_train, y_train, x_test, y_test = pinn.split_data(data, 1.0)
 
     x_train = torch.from_numpy(x_train).float().to(device)
     y_train = torch.from_numpy(y_train).float().to(device)
@@ -37,15 +39,15 @@ def train_model():
 
     ######开始训练
 
-    model = trainer.PINN()
+    model = pinn.PINN()
     model.to(device)
-    trainer.train(model, dataloader, epoches=1200, alpha=1.0, beta=10.0)
+    pinn.train(model, dataloader, epoches=1200, alpha=1.0, beta=10.0)
 
-    # trainer.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
-    torch.save(model.state_dict(), "models/PINN_model.pth")
+    # pinn.test(model, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
+    torch.save(model.state_dict(), "../saved_models/PINN_model.pth")
 
-    mpe_q, mpe_r, mpe_l = trainer.test(model,
-                                       (torch.log(x_test[:, :6]), torch.log(x_test[:, 6]), torch.log(y_test[:, 0]), torch.log(y_test[:, 1]),
+    mpe_q, mpe_r, mpe_l = pinn.test(model,
+                                    (torch.log(x_test[:, :6]), torch.log(x_test[:, 6]), torch.log(y_test[:, 0]), torch.log(y_test[:, 1]),
                   torch.log(y_test[:, 2])))
 
     return mpe_q, mpe_r, mpe_l

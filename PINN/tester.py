@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 model = trainer.PINN()
-model.load_state_dict(torch.load('models/PINN_model.pth'))
+model.load_state_dict(torch.load('saved_models/PINN_model.pth'))
 
 data = pd.read_csv("simulation_test/simulation_data.csv").to_numpy()
 
