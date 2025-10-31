@@ -126,7 +126,7 @@ def test(model, data):
     f = f.detach().cpu()
 
     dataframe = pd.DataFrame({"Rpre":np.exp(R_pre), "Lpre":np.exp(L_pre), "Qpre":np.exp(Q_pre), "Rdata":np.exp(R_data), "Ldata":np.exp(L_data), "Qdata":np.exp(Q_data), "f":np.exp(f)})
-    dataframe.to_csv("output.csv", index=False)
+    dataframe.to_csv("training_csv/PINN_output.csv", index=False)
 
     error_q_total = 0
     error_r_total = 0
