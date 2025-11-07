@@ -30,3 +30,18 @@ def pinn_dataloader(x_train, y_train, batchsize):
     batchsize = batchsize
     dataloader = DataLoader(dataset, batchsize, shuffle=False)
     return dataloader
+
+def pre_train_dataloader(x_train, y_train, batchsize):
+    R = y_train[:,0].detach()
+    L = y_train[:,1].detach()
+    f = x_train[:,6]
+    omega = torch.log(torch.tensor(2.0)) + torch.log(torch.tensor(torch.pi)) + f
+    Q_pre = omega + L - R
+
+    x_train[:,0] = x_train[:,0] * 1000
+    x_train[:,1] = x_train[:,1] * 1000
+
+    dataset = TensorDataset(x_train,x_train[:,6],y_train, Q_pre)
+    batchsize = batchsize
+    dataloader = DataLoader(dataset, batchsize, shuffle=False)
+    return dataloader

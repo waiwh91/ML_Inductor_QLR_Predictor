@@ -6,7 +6,7 @@ import numpy as np
 
 
 class PINNTransformer(nn.Module):
-    def __init__(self, input_dim=7, output_dim=2, d_model=128, nhead=8, num_layers=2, dim_feedforward=1024, dropout=0.1):
+    def __init__(self, input_dim=7, output_dim=2, d_model=128, nhead=8, num_layers=2, dim_feedforward=512, dropout=0.05):
         super(PINNTransformer, self).__init__()
 
         self.input_dim = input_dim
@@ -75,6 +75,8 @@ def train(model, dataloader, epoches = 200,alpha = 1.0, beta = 10.0):
 
         for batch_x,  batch_f,batch_y, batch_q in dataloader:
             preds = model(batch_x)
+            # print(preds.shape)
+
             loss = physics_informed_loss_function(preds, batch_y, batch_f,batch_q, alpha, beta)
 
             optimizer.zero_grad()

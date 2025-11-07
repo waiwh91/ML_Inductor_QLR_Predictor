@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import pandas as pd
-from models.model_design.pinn import PINN
+from models.model_design.pinn_model import PINN
 from models.model_design.transformers_model import PINNTransformer
 
 def transformer_predict(x_train, model, f_train, output_csv = 'Parameter_impact/predicted_csv/predicted.csv'):
@@ -18,7 +18,8 @@ def transformer_predict(x_train, model, f_train, output_csv = 'Parameter_impact/
     output_df.to_csv(output_csv, index=False)
 
 def pinn_predict(x_train, model, f_train, output_csv = 'Parameter_impact/predicted_csv/predicted.csv'):
-    r_pre, l_pre = model(torch.log(x_train[:,:6],f_train)).T.detach().numpy()
+
+    r_pre, l_pre = model(torch.log(x_train[:,:6]),torch.log(f_train)).T.detach().numpy()
 
     omega = np.log(2) + np.log(torch.pi) + torch.log(f_train)
     Q_pre = omega + l_pre - r_pre
@@ -29,6 +30,7 @@ def pinn_predict(x_train, model, f_train, output_csv = 'Parameter_impact/predict
          "Pre_R": np.exp(r_pre), "Pre_L": np.exp(l_pre)})
 
     output_df.to_csv(output_csv, index=False)
+
 
 
 def predict(model, input_csv, output_csv):

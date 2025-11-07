@@ -5,7 +5,7 @@ import data_process.ansys_integrator as data_processor
 from models.model_design import transformers_model
 from models import spliter
 import models.dataloader
-from models.model_design import pinn
+from models.model_design import pinn_model
 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -28,14 +28,28 @@ def pre_train_data_generator():
         x_pretrain[i, 6] = pre_train_f_tensor_list[idx]
 
     x_pretrain =  torch.log(x_pretrain)
-    pinn_model = pinn.PINN()
-    pinn_model.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/saved_models/PINN_model.pth'))
-    pinn_model.to(device)
+    pinn = pinn_model.PINN()
+    pinn.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/saved_models/PINN_model.pth'))
+    pinn.to(device)
     # pre_train_data = pre_train_data_generator()
 
-    y_pred = pinn_model(x_pretrain[:,:6], x_pretrain[:,6])
+    y_pred = pinn(x_pretrain[:,:6], x_pretrain[:,6])
 
     return x_pretrain, y_pred.detach()
+
+def pre_train():
+    model = transformers_model.PINNTransformer()
+    model.to(device)
+    x_pretrain, y_pretrain = pre_train_data_generator()
+    pre_train_dataloader = models.dataloader.pre_train_dataloader(x_pretrain, y_pretrain, 4096)
+
+
+
+    print("start Pre training")
+    transformers_model.train(model, pre_train_dataloader, epoches=500, alpha=1.0, beta=10)
+    print("Pre training done")
+
+    torch.save(model.state_dict(), "saved_models/Pre_trained_PINNtransformers_model.pth")
 
 
 def train_transformers():
@@ -43,17 +57,6 @@ def train_transformers():
     model = transformers_model.PINNTransformer()
     model.to(device)
 
-    # ######### Pre train
-    # x_pretrain, y_pretrain = pre_train_data_generator()
-    # pre_train_dataloader = models.dataloader.transformers_dataloader(x_pretrain, y_pretrain, 2048)
-    #
-    #
-    #
-    # print("start Pre training")
-    # transformers_model.train(model, pre_train_dataloader, epoches=300, alpha=1.0, beta=10)
-    # print("Pre training done")
-    #
-    # torch.save(model.state_dict(), "saved_models/Pre_trained_PINNtransformers_model.pth")
 
     model.load_state_dict(torch.load('saved_models/Pre_trained_PINNtransformers_model.pth'))
 
@@ -67,17 +70,22 @@ def train_transformers():
     x_test = torch.from_numpy(x_test).float().to(device)
     y_train = torch.from_numpy(y_train).float().to(device)
     y_test = torch.from_numpy(y_test).float().to(device)
-    dataloader = models.dataloader.transformers_dataloader(x_train,y_train,32)
+    dataloader = models.dataloader.transformers_dataloader(x_train,y_train,16)
 
-    transformers_model.train(model, dataloader, epoches=300, alpha=1.0, beta=10)
+    transformers_model.train(model, dataloader, epoches=800, alpha=1.0, beta=50)
 
 
      # pinn.test(models, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
+    print("start real data training")
+
     torch.save(model.state_dict(), "saved_models/PINNtransformers_model.pth")
+
+    print("real data training done")
 
     # mpe_q, mpe_r, mpe_l = pinn.test(model,
     #                             (torch.log(x_test[:, :6]), torch.log(x_test[:, 6]), torch.log(y_test[:, 0]), torch.log(y_test[:, 1]),
     #                             torch.log(y_test[:, 2])))
 
 if __name__ == "__main__":
+    pre_train()
     train_transformers()
