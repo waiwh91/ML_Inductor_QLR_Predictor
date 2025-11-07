@@ -6,25 +6,23 @@ import numpy as np
 
 
 class PINNTransformer(nn.Module):
-    def __init__(self, input_dim=7, output_dim=2, d_model=128, nhead=8, num_layers=2, dim_feedforward=1024, dropout=0.1):
+    def __init__(self, input_dim=7, output_dim=2, d_model=16, nhead=1, num_layers=3, dim_feedforward=32, dropout=0.1):
         super(PINNTransformer, self).__init__()
 
         self.input_dim = input_dim
         self.output_dim = output_dim
         self.d_model = d_model
 
+        self.input_norm = nn.LayerNorm(input_dim)
         # 输入线性映射到 d_model
-        self.input_fc = nn.Linear(input_dim, d_model)
+        self.input_fc = nn.Linear(1, d_model)
         self.layer_norm_in = nn.LayerNorm(d_model)
         # Positional encoding (可选，这里直接用 learnable embedding)
-        self.pos_embedding = nn.Parameter(torch.randn(1, 1, d_model))
-
+        self.pos_embedding = nn.Parameter(torch.randn(1, 8, d_model))
 
         encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, dim_feedforward=dim_feedforward,
                                                    dropout=dropout, batch_first=True)
         self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
-
-
 
         # 输出映射
         self.output_fc = nn.Sequential(
@@ -33,21 +31,27 @@ class PINNTransformer(nn.Module):
             nn.Linear(dim_feedforward, output_dim)
         )
 
-
-
     def forward(self, x):
         """
         x: (batch_size, input_dim)
         """
         # [batch, input_dim] -> [batch, seq_len=1, d_model]
-        h = self.input_fc(x)
+        h = x.unsqueeze(-1)
+        # h = self.input_norm(h)
+
+        h = self.input_fc(h)
+        # print(h.shape)
         h = self.layer_norm_in(h)
 
+        # print(self.pos_embedding.shape)
 
-        x = self.input_fc(x).unsqueeze(1) + self.pos_embedding  # add positional embedding
-        x = self.transformer_encoder(x)  # [batch, seq_len=1, d_model]
-        x = x.squeeze(1)  # remove seq_len dim
-        out = self.output_fc(x)
+        h = h + self.pos_embedding[:, h.size(1), :]  # add positional embedding
+        h = self.transformer_encoder(h)  # [batch, seq_len=1, d_model]
+        # h = h.squeeze(-1)  # remove seq_len dim
+        h = h[:, -1, :]
+        # print(h.shape)
+        out = self.output_fc(h)
+
         return out
 
 

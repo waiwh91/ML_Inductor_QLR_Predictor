@@ -1,5 +1,5 @@
 import pandas as pd
-from models.model_design import interpolation_model
+from models.model_design import transformer_inter_model
 import models.spliter as spliter
 import torch
 from torch.utils.data import DataLoader, TensorDataset
