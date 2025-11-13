@@ -71,5 +71,5 @@ def pinn_inter_test():
 
 if __name__ == "__main__":
 
-    # transformer_inter_test()
-    pinn_inter_test()
+    transformer_inter_test()
+    # pinn_inter_test()

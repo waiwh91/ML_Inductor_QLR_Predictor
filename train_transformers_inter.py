@@ -15,7 +15,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 def pre_train_data_generator():
 
 
-    x_pretrain = torch.rand(20000, 7).to(device)  # 输入维度6
+    x_pretrain = torch.rand(40000, 7).to(device)  # 输入维度6
     x_pretrain[:, 0] = 5 + 35 * x_pretrain[:, 0]
     x_pretrain[:, 1] = 50 + 200 * x_pretrain[:, 1]
     x_pretrain[:, 2] = 50 + 650 * x_pretrain[:, 2]
@@ -29,7 +29,7 @@ def pre_train_data_generator():
 
     x_pretrain =  torch.log(x_pretrain)
     pinn = pinn_model.PINN()
-    pinn.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/saved_models/PINN_model.pth'))
+    pinn.load_state_dict(torch.load('/home/martin/ML_Inductor_QLR_Predictor/saved_models/PINN_inter_model.pth'))
     pinn.to(device)
     # pre_train_data = pre_train_data_generator()
 
@@ -41,15 +41,15 @@ def pre_train():
     model = transformer_inter_model.PINNTransformer()
     model.to(device)
     x_pretrain, y_pretrain = pre_train_data_generator()
-    pre_train_dataloader = models.dataloader.pre_train_dataloader(x_pretrain, y_pretrain, 2048)
+    pre_train_dataloader = models.dataloader.pre_train_dataloader(x_pretrain, y_pretrain, 8192)
 
 
 
     print("start Pre training")
-    transformer_inter_model.train(model, pre_train_dataloader, epoches=400, alpha=1.0, beta=10)
+    transformer_inter_model.train(model, pre_train_dataloader, epoches=800, alpha=1.0, beta=10)
     print("Pre training done")
 
-    torch.save(model.state_dict(), "saved_models/Pre_trained_PINNtransformers_model.pth")
+    torch.save(model.state_dict(), "saved_models/Pre_trained_PINNtransformers_inter_model.pth")
 
 
 def train_transformers():
@@ -70,9 +70,9 @@ def train_transformers():
     x_test = torch.from_numpy(x_test).float().to(device)
     y_train = torch.from_numpy(y_train).float().to(device)
     y_test = torch.from_numpy(y_test).float().to(device)
-    dataloader = models.dataloader.transformers_dataloader(x_train,y_train,2)
+    dataloader = models.dataloader.transformers_dataloader(x_train,y_train,4)
     print("start real data training")
-    transformer_inter_model.train(model, dataloader, epoches=600, alpha=10, beta=10)
+    transformer_inter_model.train(model, dataloader, epoches=1200, alpha=1, beta=10)
 
 
      # pinn.test(models, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
@@ -87,5 +87,5 @@ def train_transformers():
     #                             torch.log(y_test[:, 2])))
 
 if __name__ == "__main__":
-
+    pre_train()
     train_transformers()

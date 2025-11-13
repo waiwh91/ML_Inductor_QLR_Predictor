@@ -6,7 +6,7 @@ import numpy as np
 
 
 class PINNTransformer(nn.Module):
-    def __init__(self, input_dim=7, output_dim=2, d_model=16, nhead=1, num_layers=3, dim_feedforward=32, dropout=0.1):
+    def __init__(self, input_dim=7, output_dim=2, d_model=16, nhead=1, num_layers=2, dim_feedforward=32, dropout=0.1):
         super(PINNTransformer, self).__init__()
 
         self.input_dim = input_dim

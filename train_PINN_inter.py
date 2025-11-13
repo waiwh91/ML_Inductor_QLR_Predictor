@@ -26,7 +26,7 @@ def train_pinn():
 
     model = PINN_inter_model.PINN()
     model.to(device)
-    PINN_inter_model.train(model, dataloader, epoches=1500, alpha=1.0, beta=80.0)
+    PINN_inter_model.train(model, dataloader, epoches=1500, alpha=1.0, beta=10.0)
 
      # pinn.test(models, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
     torch.save(model.state_dict(), "saved_models/PINN_inter_model.pth")
