@@ -1,9 +1,11 @@
 import model_predict
+import hybrid_model_predict
 from model_predict import pinn_predict
 from models.model_design import transformers_model
 from models.model_design import transformer_inter_model
 from models.model_design import pinn_model
 from models.model_design import PINN_inter_model
+from models.model_design import hybrid_model
 from data_process import ansys_integrator
 from data_process.output_compare import compare
 
@@ -68,8 +70,23 @@ def pinn_inter_test():
     compare_output = "Parameter_impact/data_compare/Compare_pinn_inter_100.csv"
     compare(output_path, real_path, compare_output)
 
+def hybrid_test():
+    pinn_model = PINN_inter_model.PINN()
+    trans_model = hybrid_model.ResidualTransformer()
+    output_path = "Parameter_impact/data_compare/predicted/hybrid_inter.csv"
+    input_path = "training_csv/pinn_data.csv"
+
+    pinn_model.load_state_dict(torch.load("saved_models/PINN_inter_model.pth"))
+    trans_model.load_state_dict(torch.load("saved_models/hybrid_model/residual_trans_model.pth"))
+    hybrid_model_predict.hybrid_predict(pinn_model, trans_model, input_path,output_path)
+
+    real_path = "training_csv/pinn_data.csv"
+    compare_output = "Parameter_impact/data_compare/Compare_hybrid_inter_100.csv"
+    compare(output_path, real_path, compare_output)
 
 if __name__ == "__main__":
 
-    transformer_inter_test()
+    # transformer_inter_test()
+    # pinn_inter_test()
+    hybrid_test()
     # pinn_inter_test()
