@@ -22,11 +22,13 @@ def train_pinn():
     y_train = torch.from_numpy(y_train).float().to(device)
     y_test = torch.from_numpy(y_test).float().to(device)
 
-    dataloader = models.dataloader.pinn_dataloader(x_train,y_train,6)
+    dataloader = models.dataloader.pinn_dataloader(x_train,y_train,20)
 
+    epochs = int(x_train.cpu().numpy().shape[0] / 5 * 40)
+    print(epochs)
     model = PINN_inter_model.PINN()
     model.to(device)
-    PINN_inter_model.train(model, dataloader, epoches=1500, alpha=1.0, beta=10.0)
+    PINN_inter_model.train(model, dataloader, epoches=epochs, alpha=1.0, beta=15)
 
      # pinn.test(models, (x_test[:,:6], x_test[:,6], y_test[:,0], y_test[:,1], y_test[:,2]))
     torch.save(model.state_dict(), "saved_models/PINN_inter_model.pth")

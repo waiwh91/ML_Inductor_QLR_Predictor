@@ -88,5 +88,5 @@ if __name__ == "__main__":
 
     # transformer_inter_test()
     # pinn_inter_test()
-    hybrid_test()
-    # pinn_inter_test()
+    # hybrid_test()
+    pinn_inter_test()
