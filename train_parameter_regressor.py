@@ -11,21 +11,21 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 def train_para():
 
     data = pd.read_csv("../inductor_w_tabfpn/output.csv").to_numpy()
-    data = torch.from_numpy(data).float().to(device)
+    data = torch.log(torch.from_numpy(data).float().to(device))
 
     test_data = pd.read_csv("training_csv/pinn_data.csv").to_numpy()
-    test_data = torch.from_numpy(test_data).float().to(device)
+    test_data = torch.log(torch.from_numpy(test_data).float().to(device))
 
 
-    test_x = torch.cat([test_data[:, 1:6], test_data[:, 7:]], dim=1)
-    test_y = test_data[:, 0]
+    test_x = torch.cat([test_data[:, 0:5], test_data[:, 7:]], dim=1)
+    test_y = test_data[:, 5]
     test_f = test_data[:, 6]
 
     print(test_x.shape, test_y.shape, test_f.shape)
 
-    x = torch.log(torch.cat([data[:,1:6],data[:,7:]], dim=1))
+    x = torch.log(torch.cat([data[:,0:5],data[:,7:]], dim=1))
 
-    y = torch.log(data[:,0])
+    y = torch.log(data[:,5])
 
     f = data[:,6]
 
@@ -37,7 +37,7 @@ def train_para():
 
     para_model = parameter_model.PINN()
     para_model.to(device)
-    parameter_model.train(para_model, dataloader, epoches=400)
+    parameter_model.train(para_model, dataloader, epoches=1200)
 
     pred_y = para_model(test_x, test_f)
 

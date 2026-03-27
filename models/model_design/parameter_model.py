@@ -26,31 +26,31 @@ class PINN(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.fc1 = nn.Linear(8, 16)
+        self.fc1 = nn.Linear(8, 64)
         # self.ln1 = nn.LayerNorm(8)
 
-        self.fc2 = nn.Linear(16+1, 32)
+        self.fc2 = nn.Linear(64+1, 128)
 
-        self.ln2 = nn.LayerNorm(32)
-        self.fc3 = nn.Linear(32,16)
-        self.fc4 = nn.Linear(16, 6)
-        self.fc5 = nn.Linear(6, 4)
-        self.fc6 = nn.Linear(4, 1)
+        self.ln2 = nn.LayerNorm(128)
+        self.fc3 = nn.Linear(128,64)
+        self.fc4 = nn.Linear(64, 32)
+        self.fc5 = nn.Linear(32, 8)
+        self.fc6 = nn.Linear(8, 1)
 
     def forward(self, x, extra):
         # h = torch.tanh(self.fc1(x))
-        h = nn.functional.silu(self.fc1(x))
+        h = nn.functional.relu(self.fc1(x))
         # h = self.ln1(h)
 
         extra = extra.unsqueeze(1)
         h = torch.cat([h, extra], dim=1)
         # h = torch.tanh(self.fc2(h))
-        h = nn.functional.silu(self.fc2(h))
+        h = nn.functional.relu(self.fc2(h))
         h = self.ln2(h)
         # h = torch.tanh(self.fc3(h))
-        h = nn.functional.silu(self.fc3(h))
-        h = nn.functional.silu(self.fc4(h))
-        h = nn.functional.silu(self.fc5(h))
+        h = nn.functional.relu(self.fc3(h))
+        h = nn.functional.relu(self.fc4(h))
+        h = nn.functional.relu(self.fc5(h))
         out = self.fc6(h)
         # out = nn.Softmax(dim=1)(out)
         return out
@@ -58,7 +58,7 @@ class PINN(nn.Module):
 def train(model, dataloader, epoches = 2000):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    optimizer = optim.Adam(model.parameters(), lr = 1e-4)
+    optimizer = optim.Adam(model.parameters(), lr = 1e-3)
     loss_fn = nn.MSELoss()
     loss_q = nn.SmoothL1Loss()
 
