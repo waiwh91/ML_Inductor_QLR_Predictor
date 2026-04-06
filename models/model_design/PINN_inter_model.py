@@ -70,11 +70,7 @@ def train(model, dataloader, epoches = 2000, alpha = 1.0, beta = 6.0):
 
             loss_data = loss_fn(preds, batch_y)
 
-            # R_pre = preds.detach().cpu().numpy()[:,0]
-            # L_pre = preds.detach().cpu().numpy()[:,1]
-            #
-            #
-            # f = batch_f.detach().cpu().numpy()
+
 
             R_pre = preds.detach()[:, 0]
             L_pre = preds.detach()[:, 1]

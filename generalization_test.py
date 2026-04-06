@@ -62,11 +62,11 @@ def pinn_inter_test():
     model = PINN_inter_model.PINN()
     model.load_state_dict(torch.load("saved_models/PINN_inter_model.pth"))
     output_path = "Parameter_impact/data_compare/predicted/pinn_inter.csv"
-    input_path = "training_csv/pinn_data.csv"
+    input_path = "RLQ/full_dataset.csv"
 
     model_predict.predict(model, input_path, output_path)
 
-    real_path = "training_csv/pinn_data.csv"
+    real_path = "RLQ/full_dataset.csv"
     compare_output = "Parameter_impact/data_compare/Compare_pinn_inter_100.csv"
     compare(output_path, real_path, compare_output)
 
